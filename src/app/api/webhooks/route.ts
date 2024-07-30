@@ -17,6 +17,7 @@ export async function POST(req: Request) {
       return new Response("Invalid signature", { status: 400 });
     }
 
+    console.log("selam");
     const event = stripe.webhooks.constructEvent(
       body,
       signature,
@@ -72,7 +73,7 @@ export async function POST(req: Request) {
         },
       });
 
-      await resend.emails.send({
+      const res = await resend.emails.send({
         from: "CaseCobra <selimozcan17@gmail.com>",
         to: [event.data.object.customer_details.email],
         subject: "Thanks for your order!",
@@ -90,6 +91,8 @@ export async function POST(req: Request) {
           },
         }),
       });
+
+      console.log(res);
     }
 
     return NextResponse.json({ result: event, ok: true });
